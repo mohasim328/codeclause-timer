@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
 import InputTimer from './InputTimer';
+import ShowTimer from './ShowTimer';
 import './App.css'
 
 function App() {
@@ -69,17 +70,18 @@ function App() {
     } else if (sec === 0 && min > 0) {
       setMinutes((m) => m - 1);
       setSeconds(59);
-    }
-    else if (min === 0) {
+    } else if (min === 0) {
       setHours((h) => h - 1)
       setMinutes(59);
       setSeconds(59);
 
     }
     if (hr === 0 && min === 0 && sec === 0) {
-      resetTime();
+      handleReset();
       clearInterval(tid);
-      alert("COUNDOWN END.......")
+      alert("COUNDOWN IS FINISHED..")
+      clearInterval(tid);
+      return
     }
 
   }
@@ -110,32 +112,11 @@ function App() {
       <h1>Coundown Timer</h1>
 
       {
-        !isStart && (<InputTimer handleInput = {handleInput} handleStart ={handleStart}/>)
+        !isStart && <InputTimer handleInput = {handleInput} handleStart ={handleStart}/>
       }
 
       {
-        isStart && (<div className='show-container'>
-          <div className='timer-box'>
-            <div>{hours < 10 ? `0${hours}` : hours}</div>
-            <span>:</span>
-            <div>{minutes < 10 ? `0${minutes}` : minutes}</div>
-            <span>:</span>
-            <div>{seconds < 10 ? `0${seconds}` : seconds}</div>
-          </div>
-          <div className='action-box'>
-            {
-
-              !isPaused && <button onClick={handlePause} className='timer-button'> Pause</button>
-            }
-            {
-
-              isPaused && <button onClick={handleResume} className='timer-button'> Resume</button>
-            }
-            <button
-              onClick={handleReset}
-              className='timer-button'>Restart</button>
-          </div>
-        </div>)
+        isStart && <ShowTimer seconds = {seconds} minutes = {minutes} hours = {hours} isPaused = {isPaused} handlePause = {handlePause} handleReset = {handleReset} handleResume = {handleResume}/>
       }
     </div>
   </div>
